@@ -14,16 +14,18 @@ defmodule EtsBrowser.Plug do
 
   ## Using with Plug or Phoenix
 
-    # In your Router
-    defmodule MyApp.Router do
-      use Phoenix.Router # or use Plug.Router if you're not using Phoenix
-      if Mix.env == :dev do
-        # If using Phoenix
-        forward "/ets_browser", EtsBrowser.Plug
-        # If using Plug.Router, make sure to add the `to`
-        forward "/ets_browser", to: EtsBrowser.Plug
+      # In your Router
+      defmodule MyApp.Router do
+        use Phoenix.Router # or use Plug.Router if you're not using Phoenix
+
+        if Mix.env == :dev do
+          # If using Phoenix
+          forward "/ets_browser", EtsBrowser.Plug
+          
+          # If using Plug.Router, make sure to add the `to`
+          forward "/ets_browser", to: EtsBrowser.Plug
+        end
       end
-    end
 
   Now if you visit your app at `/ets_browser` you will see a list of all public 
   or protected ETS tables on your current node.

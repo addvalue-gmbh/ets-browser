@@ -2,6 +2,8 @@
 
 A simple web-based viewer of data stored in ETS.
 
+Inspired by [redis-browser](https://github.com/benubois/redis-browser).
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed

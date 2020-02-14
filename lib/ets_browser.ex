@@ -1,6 +1,6 @@
 defmodule EtsBrowser do
   @moduledoc """
-  Documentation for EtsBrowser.
+  A simple web-based viewer of data stored in ETS.
   """
 
   alias EtsBrowser.Table
