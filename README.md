@@ -1,6 +1,6 @@
 # EtsBrowser
 
-**TODO: Add description**
+A simple web-based viewer of data stored in ETS.
 
 ## Installation
 
