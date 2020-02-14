@@ -19,6 +19,12 @@
         height: 100%;
         overflow: hidden;
       }
+      .empty {
+        padding: 10%;
+        text-align: center;
+        font-size: 28px;
+        color: #dbe1e8;
+      }
       .wrap {
         display: flex;
         align-items: flex-start;
@@ -89,8 +95,6 @@
         position: relative;
       }
       .data {
-        overflow-y: hidden;
-        overflow-x: hidden;
         width: 100%;
         height: 100%;
         position: absolute;
@@ -105,12 +109,14 @@
         border-collapse: collapse;
       }
       table td {
-        padding: 4px;
+        padding: 4px 6px;
+        font-family: Consolas, Monaco, monospace;
+        line-height: 120%;
       }
       table th {
         text-align: left;
         color: #333;
-        padding: 4px 4px;
+        padding: 4px 6px;
       }
       table thead th {
         background: #edeeee;
@@ -146,6 +152,20 @@
   </body>
 
   <script>
+    function hasClass(el, className) {
+      return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
+    }
+
+    function addClass(el, className) {
+      if (el.classList) el.classList.add(className);
+      else if (!hasClass(el, className)) el.className += ' ' + className;
+    }
+
+    function removeClass(el, className) {
+      if (el.classList) el.classList.remove(className);
+      else el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
+    }
+
     function addEvent(el, type, handler) {
       if (el.attachEvent) el.attachEvent('on'+type, handler); else el.addEventListener(type, handler);
     }
@@ -161,6 +181,14 @@
       return xhr;
     }
 
+    function removeSelectedCalssesOnLinks() {
+      var linkHandler = document.querySelectorAll("a");
+
+      linkHandler.forEach(function(link) {
+        removeClass(link, "selected");
+      });
+    }
+
     function linkHandler() {
       var linkHandler = document.querySelectorAll("a");
       var dataEl = document.querySelector(".data");
@@ -169,6 +197,9 @@
         addEvent(link, 'click', function(e) {
           e.preventDefault();
           e.stopPropagation();
+
+          removeSelectedCalssesOnLinks();
+          addClass(link, "selected");
 
           getRequest(link.href, function(resp) {
             dataEl.innerHTML = resp

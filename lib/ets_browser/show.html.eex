@@ -8,7 +8,7 @@
     <tbody>
       <%= for tuple <- @tuples do %>
         <tr>
-          <td><%= inspect(tuple) %></td>
+          <td><%= HtmlEntities.encode inspect(tuple) %></td>
         </tr>
       <% end %>
     </tbody>

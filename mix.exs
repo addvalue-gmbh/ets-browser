@@ -25,7 +25,8 @@ defmodule EtsBrowser.MixProject do
   defp deps do
     [
       {:plug, "~> 1.9"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:html_entities, "~> 0.4"}
     ]
   end
 
