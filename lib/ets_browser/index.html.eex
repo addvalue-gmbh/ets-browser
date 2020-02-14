@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>ETS Browser</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.css" charset="utf-8">
+    <style>
+      body, html {
+        height: 100%;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: "Helvetica Neue", sans-serif;
+        font-size: 13px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .wrap {
+        display: flex;
+        align-items: flex-start;
+        height: 100%;
+      }
+      .keys {
+        width: 350px;
+        flex-grow: 0;
+        background: #dbe1e8;
+        position: relative;
+        height: 100%;
+      }
+      .keys ul {
+        padding: 0;
+        margin: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        list-style: none;
+        display: block;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .keys li a {
+        color: #000;
+        text-decoration: none;
+        display: block;
+        padding: 2px 6px 2px 115px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        position: relative;
+      }
+      .keys li a.selected {
+        background: #8ba0b3;
+        color: #fff;
+      }
+      .keys li a.selected span {
+        color: #ccc;
+      }
+      .keys li a span {
+        font-family: Consolas, Monaco, monospace;
+        color: #333;
+        width: 80px;
+        position: absolute;
+        left: 6px;
+        top: 3px;
+      }
+      .ui-resizable-e {
+        height: 100%;
+        width: 5px;
+        position: absolute;
+        background-color: transparent;
+        right: -3px;
+        top: 0;
+        cursor: col-resize;
+      }
+      .data-wrap {
+        flex-grow: 1;
+        border-left: 1px solid #bbb;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: 100%;
+        position: relative;
+      }
+      .data {
+        overflow-y: hidden;
+        overflow-x: hidden;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      table {
+        width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+      table td {
+        padding: 4px;
+      }
+      table th {
+        text-align: left;
+        color: #333;
+        padding: 4px 4px;
+      }
+      table thead th {
+        background: #edeeee;
+        border-bottom: 1px solid #bbb;
+      }
+      table thead th span {
+        border-right: 1px solid #bbb;
+        display: block;
+      }
+      table tbody tr:nth-child(odd) td {
+        background-color: #f6f7f9;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="keys">
+        <ul>
+          <%= for table <- @tables do %>
+            <li>
+              <a href="<%= @base_path %>/<%= table.name %>">
+                <span><%= table.type %></span> <%= table.name %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="data-wrap">
+        <div class="data"></div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function addEvent(el, type, handler) {
+      if (el.attachEvent) el.attachEvent('on'+type, handler); else el.addEventListener(type, handler);
+    }
+
+    function getRequest(url, success) {
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+      xhr.open('GET', url);
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState>3 && xhr.status==200) success(xhr.responseText);
+      };
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send();
+      return xhr;
+    }
+
+    function linkHandler() {
+      var linkHandler = document.querySelectorAll("a");
+      var dataEl = document.querySelector(".data");
+
+      linkHandler.forEach(function(link) {
+        addEvent(link, 'click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          getRequest(link.href, function(resp) {
+            dataEl.innerHTML = resp
+          })
+
+        });
+      });
+    }
+
+    linkHandler();
+  </script>
+</html>

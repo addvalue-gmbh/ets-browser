@@ -1,0 +1,20 @@
+<%= unless Enum.empty?(@tuples) do %>
+  <table>
+    <thead>
+      <tr>
+        <th><span>Value</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for tuple <- @tuples do %>
+        <tr>
+          <td><%= inspect(tuple) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="empty">
+    No data found.
+  </div>
+<% end %>
